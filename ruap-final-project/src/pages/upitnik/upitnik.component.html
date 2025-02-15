@@ -43,7 +43,7 @@
                 'border-surface': value > activeStep
               }"
             >
-              <i class="pi pi-star"></i>
+              <i class="pi pi-user-edit"></i>
             </span>
           </button>
         </ng-template>
@@ -72,6 +72,7 @@
           </button>
         </ng-template>
       </p-step>
+      
     </p-step-list>
 
     <p-step-panels>
@@ -108,59 +109,162 @@
           </div>
         </ng-template>
       </p-step-panel>
-
       <p-step-panel [value]="2">
         <ng-template #content let-activateCallback="activateCallback">
           <div
-            class="flex flex-col gap-2 mx-auto"
+            class="flex flex-col items-center gap-4 mx-auto"
             style="min-height: 16rem; width: 100%"
           >
             <div class="text-center mt-4 mb-4 text-xl font-semibold">
-              What's your company
+              Additional Information
             </div>
             <div class="text-center" style="width: 100%">
-              <p-select
-                [options]="companies"
-                optionLabel="label"
-                [(ngModel)]="selectedCompany"
-                [filter]="true"
-                filterBy="label"
-                placeholder="Select a company"
-              >
-                <ng-template #selectedItem let-company>
-                  <div class="flex">
-                    <div>{{ company.label }}</div>
+              <div class="mb-4">
+                <label for="age">Age:</label>
+                <input
+                  type="number"
+                  id="age"
+                  [(ngModel)]="userAge"
+                  class="p-inputtext p-component"
+                  placeholder="Enter your age"
+                />
+              </div>
+              <div class="mb-4">
+                <label>Skills:</label>
+                <div class="flex flex-col items-start gap-2">
+                  <div class="flex items-center gap-2">
+                    <label class="mr-2">Python:</label>
+                    <p-checkbox
+                      [(ngModel)]="skills.python"
+                      binary="true"
+                      label="Python"
+                    ></p-checkbox>
                   </div>
-                </ng-template>
-                <ng-template let-company #item>
-                  <div class="flex">
-                    <div>{{ company.label }}</div>
+                  <div class="flex items-center gap-2">
+                    <label class="mr-2">R:</label>
+                    <p-checkbox
+                      [(ngModel)]="skills.r"
+                      binary="true"
+                      label="R"
+                    ></p-checkbox>
                   </div>
-                </ng-template>
-              </p-select>
+                  <div class="flex items-center gap-2">
+                    <label class="mr-2">AWS:</label>
+                    <p-checkbox
+                      [(ngModel)]="skills.aws"
+                      binary="true"
+                      label="AWS"
+                    ></p-checkbox>
+                  </div>
+                  <div class="flex items-center gap-2">
+                    <label class="mr-2">Excel:</label>
+                    <p-checkbox
+                      [(ngModel)]="skills.excel"
+                      binary="true"
+                      label="Excel"
+                    ></p-checkbox>
+                  </div>
+                  <div class="flex items-center gap-2">
+                    <label class="mr-2">Spark:</label>
+                    <p-checkbox
+                      [(ngModel)]="skills.spark"
+                      binary="true"
+                      label="Spark"
+                    ></p-checkbox>
+                  </div>
+                </div>
+              </div>
+              <div class="mb-4">
+                <label>Seniority:</label>
+                <p-checkbox
+                  [(ngModel)]="isSenior"
+                  binary="true"
+                  label="Senior"
+                ></p-checkbox>
+              </div>
             </div>
           </div>
         </ng-template>
       </p-step-panel>
-
+      
       <p-step-panel [value]="3">
         <ng-template #content let-activateCallback="activateCallback">
           <div
-            class="flex flex-col gap-2 mx-auto"
-            style="min-height: 16rem; max-width: 24rem"
+            class="flex flex-col items-center gap-4 mx-auto"
+            style="min-height: 16rem; width: 100%"
           >
             <div class="text-center mt-4 mb-4 text-xl font-semibold">
-              Account created successfully
+              Company Information
             </div>
-            <div class="text-center">
-              <img
-                alt="logo"
-                src="https://primefaces.org/cdn/primeng/images/stepper/content.svg"
-              />
+            <div class="text-center" style="width: 100%">
+              <div class="mb-4">
+                <label>Location:</label>
+                <p-select
+                  [options]="locations"
+                  optionLabel="label"
+                  [(ngModel)]="selectedLocation"
+                  [filter]="true"
+                  filterBy="label"
+                  placeholder="Select a location"
+                ></p-select>
+              </div>
+              <div class="mb-4">
+                <label>Size:</label>
+                <p-select
+                  [options]="sizes"
+                  optionLabel="label"
+                  [(ngModel)]="selectedSize"
+                  [filter]="true"
+                  filterBy="label"
+                  placeholder="Select a size"
+                ></p-select>
+              </div>
+              <div class="mb-4">
+                <label>Type of Ownership:</label>
+                <p-select
+                  [options]="ownershipTypes"
+                  optionLabel="label"
+                  [(ngModel)]="selectedOwnershipType"
+                  [filter]="true"
+                  filterBy="label"
+                  placeholder="Select a type of ownership"
+                ></p-select>
+              </div>
+              <div class="mb-4">
+                <label>Industry:</label>
+                <p-select
+                  [options]="industries"
+                  optionLabel="label"
+                  [(ngModel)]="selectedIndustry"
+                  [filter]="true"
+                  filterBy="label"
+                  placeholder="Select an industry"
+                ></p-select>
+              </div>
+              <div class="mb-4">
+                <label>Sector:</label>
+                <p-select
+                  [options]="sectors"
+                  optionLabel="label"
+                  [(ngModel)]="selectedSector"
+                  [filter]="true"
+                  filterBy="label"
+                  placeholder="Select a sector"
+                ></p-select>
+              </div>
+              <div class="mb-4">
+                <label>Same State:</label>
+                <p-checkbox
+                  [(ngModel)]="sameState"
+                  binary="true"
+                  label="Same State"
+                ></p-checkbox>
+              </div>
             </div>
           </div>
         </ng-template>
       </p-step-panel>
+      
     </p-step-panels>
   </p-stepper>
 </div>

@@ -6,6 +6,7 @@ import { StepperModule } from 'primeng/stepper';
 import { FormsModule } from '@angular/forms';
 import { SelectModule } from 'primeng/select';
 import { Select } from 'primeng/select';
+import { CheckboxModule } from 'primeng/checkbox';
 
 type Data = {
   'Job Title': string;
@@ -35,7 +36,7 @@ type Data = {
 @Component({
   selector: 'app-upitnik',
   standalone: true,
-  imports: [StepperModule, CommonModule, SelectModule, FormsModule, Select],
+  imports: [StepperModule, CommonModule, SelectModule, FormsModule, Select, CheckboxModule],
   templateUrl: './upitnik.component.html',
   styleUrl: './upitnik.component.scss',
 })
@@ -46,7 +47,28 @@ export class UpitnikComponent implements OnInit {
   public selectedJob: string | undefined;
 
   public companies: any[] = [];
-  public selectedCompany: string | undefined;
+  public locations: any[] = [];
+  public sizes: any[] = [];
+  public ownershipTypes: any[] = [];
+  public industries: any[] = [];
+  public sectors: any[] = [];
+
+  public selectedLocation: string | undefined;
+  public selectedSize: string | undefined;
+  public selectedOwnershipType: string | undefined;
+  public selectedIndustry: string | undefined;
+  public selectedSector: string | undefined;
+  public sameState: boolean = false;
+
+  public userAge: number | undefined;
+  public skills = {
+    python: false,
+    r: false,
+    aws: false,
+    excel: false,
+    spark: false,
+  };
+  public isSenior: boolean = false;
 
   constructor(private httpClient: HttpClient) {}
 
@@ -62,14 +84,17 @@ export class UpitnikComponent implements OnInit {
 
         const { data } = parsed;
 
+        const filterInvalidValues = (value: string | number) =>
+          value && value !== 'Unknown' && value !== -1;
+
         const uniqueJobTitles = [
-          ...new Set(data.map((row) => row['Job Title'])),
+          ...new Set(data.map((row) => row['Job Title']).filter(filterInvalidValues)),
         ];
 
         this.jobs = uniqueJobTitles.map((job) => ({ label: job, value: job }));
 
         const uniqueCompanies = [
-          ...new Set(data.map((row) => row.company_txt)),
+          ...new Set(data.map((row) => row.company_txt).filter(filterInvalidValues)),
         ];
 
         this.companies = uniqueCompanies.map((company) => ({
@@ -77,8 +102,58 @@ export class UpitnikComponent implements OnInit {
           value: company,
         }));
 
+        const uniqueLocations = [
+          ...new Set(data.map((row) => row.Location).filter(filterInvalidValues)),
+        ];
+
+        this.locations = uniqueLocations.map((location) => ({
+          label: location,
+          value: location,
+        }));
+
+        const uniqueSizes = [
+          ...new Set(data.map((row) => row.Size).filter(filterInvalidValues)),
+        ];
+
+        this.sizes = uniqueSizes.map((size) => ({
+          label: size,
+          value: size,
+        }));
+
+        const uniqueOwnershipTypes = [
+          ...new Set(data.map((row) => row['Type of ownership']).filter(filterInvalidValues)),
+        ];
+
+        this.ownershipTypes = uniqueOwnershipTypes.map((type) => ({
+          label: type,
+          value: type,
+        }));
+
+        const uniqueIndustries = [
+          ...new Set(data.map((row) => row.Industry).filter(filterInvalidValues)),
+        ];
+
+        this.industries = uniqueIndustries.map((industry) => ({
+          label: industry,
+          value: industry,
+        }));
+
+        const uniqueSectors = [
+          ...new Set(data.map((row) => row.Sector).filter(filterInvalidValues)),
+        ];
+
+        this.sectors = uniqueSectors.map((sector) => ({
+          label: sector,
+          value: sector,
+        }));
+
         console.log(this.jobs);
         console.log(this.companies);
+        console.log(this.locations);
+        console.log(this.sizes);
+        console.log(this.ownershipTypes);
+        console.log(this.industries);
+        console.log(this.sectors);
       });
   }
 }
