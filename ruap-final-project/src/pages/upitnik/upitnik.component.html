@@ -1,1 +1,166 @@
-<p>upitnik works!</p>
+<div class="card flex justify-center" style="width: 70vw">
+  <p-stepper [(value)]="activeStep">
+    <p-step-list>
+      <p-step [value]="1" class="flex flex-row flex-auto gap-2">
+        <ng-template
+          #content
+          let-activateCallback="activateCallback"
+          let-value="value"
+        >
+          <button
+            class="bg-transparent border-0 inline-flex flex-col gap-2"
+            (click)="activateCallback()"
+          >
+            <span
+              class="rounded-full border-2 w-12 h-12 inline-flex items-center justify-center"
+              [ngClass]="{
+                'bg-primary text-primary-contrast border-primary':
+                  value <= activeStep,
+                'border-surface': value > activeStep
+              }"
+            >
+              <i class="pi pi-user"></i>
+            </span>
+          </button>
+        </ng-template>
+      </p-step>
+
+      <p-step [value]="2" class="flex flex-row flex-auto gap-2">
+        <ng-template
+          #content
+          let-activateCallback="activateCallback"
+          let-value="value"
+        >
+          <button
+            class="bg-transparent border-0 inline-flex flex-col gap-2"
+            (click)="activateCallback()"
+          >
+            <span
+              class="rounded-full border-2 w-12 h-12 inline-flex items-center justify-center"
+              [ngClass]="{
+                'bg-primary text-primary-contrast border-primary':
+                  value <= activeStep,
+                'border-surface': value > activeStep
+              }"
+            >
+              <i class="pi pi-star"></i>
+            </span>
+          </button>
+        </ng-template>
+      </p-step>
+
+      <p-step [value]="3" class="flex flex-row flex-auto gap-2">
+        <ng-template
+          #content
+          let-activateCallback="activateCallback"
+          let-value="value"
+        >
+          <button
+            class="bg-transparent border-0 inline-flex flex-col gap-2"
+            (click)="activateCallback()"
+          >
+            <span
+              class="rounded-full border-2 w-12 h-12 inline-flex items-center justify-center"
+              [ngClass]="{
+                'bg-primary text-primary-contrast border-primary':
+                  value <= activeStep,
+                'border-surface': value > activeStep
+              }"
+            >
+              <i class="pi pi-id-card"></i>
+            </span>
+          </button>
+        </ng-template>
+      </p-step>
+    </p-step-list>
+
+    <p-step-panels>
+      <p-step-panel [value]="1">
+        <ng-template #content let-activateCallback="activateCallback">
+          <div
+            class="flex flex-col gap-2 mx-auto"
+            style="min-height: 16rem; width: 100%"
+          >
+            <div class="text-center mt-4 mb-4 text-xl font-semibold">
+              What's your job title
+            </div>
+            <div class="text-center" style="width: 100%">
+              <p-select
+                [options]="jobs"
+                optionLabel="label"
+                [(ngModel)]="selectedJob"
+                [filter]="true"
+                filterBy="label"
+                placeholder="Select a job"
+              >
+                <ng-template #selectedItem let-job>
+                  <div class="flex">
+                    <div>{{ job.label }}</div>
+                  </div>
+                </ng-template>
+                <ng-template let-job #item>
+                  <div class="flex">
+                    <div>{{ job.label }}</div>
+                  </div>
+                </ng-template>
+              </p-select>
+            </div>
+          </div>
+        </ng-template>
+      </p-step-panel>
+
+      <p-step-panel [value]="2">
+        <ng-template #content let-activateCallback="activateCallback">
+          <div
+            class="flex flex-col gap-2 mx-auto"
+            style="min-height: 16rem; width: 100%"
+          >
+            <div class="text-center mt-4 mb-4 text-xl font-semibold">
+              What's your company
+            </div>
+            <div class="text-center" style="width: 100%">
+              <p-select
+                [options]="companies"
+                optionLabel="label"
+                [(ngModel)]="selectedCompany"
+                [filter]="true"
+                filterBy="label"
+                placeholder="Select a company"
+              >
+                <ng-template #selectedItem let-company>
+                  <div class="flex">
+                    <div>{{ company.label }}</div>
+                  </div>
+                </ng-template>
+                <ng-template let-company #item>
+                  <div class="flex">
+                    <div>{{ company.label }}</div>
+                  </div>
+                </ng-template>
+              </p-select>
+            </div>
+          </div>
+        </ng-template>
+      </p-step-panel>
+
+      <p-step-panel [value]="3">
+        <ng-template #content let-activateCallback="activateCallback">
+          <div
+            class="flex flex-col gap-2 mx-auto"
+            style="min-height: 16rem; max-width: 24rem"
+          >
+            <div class="text-center mt-4 mb-4 text-xl font-semibold">
+              Account created successfully
+            </div>
+            <div class="text-center">
+              <img
+                alt="logo"
+                src="https://primefaces.org/cdn/primeng/images/stepper/content.svg"
+              />
+            </div>
+          </div>
+        </ng-template>
+      </p-step-panel>
+    </p-step-panels>
+  </p-stepper>
+</div>
