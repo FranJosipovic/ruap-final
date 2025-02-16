@@ -1,5 +1,35 @@
 <div class="card flex justify-center" style="width: 70vw">
-  <p-stepper [(value)]="activeStep">
+  <div style="text-align: center" *ngIf="isCalculating">
+    <p-progress-spinner ariaLabel="isCalculating" />
+    <h1>Calculating!</h1>
+  </div>
+
+  <div style="text-align: center" *ngIf="successfullyCalculated !== undefined">
+    <div *ngIf="successfullyCalculated">
+      <h2>Estimated Salary:</h2>
+      <h3>5000$</h3>
+      <p-button
+        [style]="{ background: 'blue' }"
+        label="Calculate Again"
+        (onClick)="calculateAgain()"
+        [disabled]="!canSubmit"
+      />
+    </div>
+    <div *ngIf="!successfullyCalculated">
+      <h3>Error while estimating your salary</h3>
+      <p-button
+        [style]="{ background: 'blue' }"
+        label="Calculate Again"
+        (onClick)="calculateAgain()"
+        [disabled]="!canSubmit"
+      />
+    </div>
+  </div>
+
+  <p-stepper
+    [(value)]="activeStep"
+    *ngIf="!isCalculating && successfullyCalculated === undefined"
+  >
     <p-step-list>
       <p-step [value]="1" class="flex flex-row flex-auto gap-2">
         <ng-template
@@ -72,7 +102,6 @@
           </button>
         </ng-template>
       </p-step>
-      
     </p-step-list>
 
     <p-step-panels>
@@ -106,6 +135,18 @@
                 </ng-template>
               </p-select>
             </div>
+            <div
+              class="flex pt-6 justify-end"
+              style="text-align: right; margin-top: 20px"
+            >
+              <p-button
+                label="Next"
+                icon="pi pi-arrow-right"
+                iconPos="right"
+                (onClick)="activateCallback(2)"
+                [disabled]="!canGoToPage2"
+              />
+            </div>
           </div>
         </ng-template>
       </p-step-panel>
@@ -115,23 +156,29 @@
             class="flex flex-col items-center gap-4 mx-auto"
             style="min-height: 16rem; width: 100%"
           >
-            <div class="text-center mt-4 mb-4 text-xl font-semibold">
+            <h3 class="text-center mt-4 mb-4 text-xl font-semibold">
               Additional Information
-            </div>
+            </h3>
             <div class="text-center" style="width: 100%">
-              <div class="mb-4">
+              <div style="display: flex; flex-direction: column" class="mb-4;">
                 <label for="age">Age:</label>
-                <input
-                  type="number"
-                  id="age"
+                <p-inputnumber
                   [(ngModel)]="userAge"
-                  class="p-inputtext p-component"
-                  placeholder="Enter your age"
+                  inputId="integeronly"
+                  [min]="0"
+                  [max]="100"
                 />
               </div>
-              <div class="mb-4">
-                <label>Skills:</label>
-                <div class="flex flex-col items-start gap-2">
+              <div class="mb-4 mt-4">
+                <h3>Skills:</h3>
+                <div
+                  style="
+                    display: grid;
+                    column-gap: 10vw;
+                    row-gap: 20px;
+                    grid-template-columns: auto auto;
+                  "
+                >
                   <div class="flex items-center gap-2">
                     <label class="mr-2">Python:</label>
                     <p-checkbox
@@ -174,19 +221,34 @@
                   </div>
                 </div>
               </div>
-              <div class="mb-4">
-                <label>Seniority:</label>
-                <p-checkbox
-                  [(ngModel)]="isSenior"
-                  binary="true"
-                  label="Senior"
-                ></p-checkbox>
-              </div>
+            </div>
+            <div
+              class="pt-6"
+              style="
+                text-align: right;
+                margin-top: 20px;
+                justify-content: space-between;
+                display: flex;
+              "
+            >
+              <p-button
+                label="Previous"
+                icon="pi pi-arrow-left"
+                iconPos="left"
+                (onClick)="activateCallback(1)"
+              />
+              <p-button
+                label="Next"
+                icon="pi pi-arrow-right"
+                iconPos="right"
+                (onClick)="activateCallback(3)"
+                [disabled]="!canGoToPage3"
+              />
             </div>
           </div>
         </ng-template>
       </p-step-panel>
-      
+
       <p-step-panel [value]="3">
         <ng-template #content let-activateCallback="activateCallback">
           <div
@@ -197,7 +259,7 @@
               Company Information
             </div>
             <div class="text-center" style="width: 100%">
-              <div class="mb-4">
+              <div style="margin-top: 10px" class="mb-4 mt-4">
                 <label>Location:</label>
                 <p-select
                   [options]="locations"
@@ -208,18 +270,18 @@
                   placeholder="Select a location"
                 ></p-select>
               </div>
-              <div class="mb-4">
-                <label>Size:</label>
+              <div style="margin-top: 10px" class="mb-4 mt-4">
+                <label>Company Size:</label>
                 <p-select
                   [options]="sizes"
                   optionLabel="label"
                   [(ngModel)]="selectedSize"
                   [filter]="true"
                   filterBy="label"
-                  placeholder="Select a size"
+                  placeholder="Select a company size"
                 ></p-select>
               </div>
-              <div class="mb-4">
+              <div style="margin-top: 10px" class="mb-4 mt-4">
                 <label>Type of Ownership:</label>
                 <p-select
                   [options]="ownershipTypes"
@@ -230,7 +292,7 @@
                   placeholder="Select a type of ownership"
                 ></p-select>
               </div>
-              <div class="mb-4">
+              <div style="margin-top: 10px" class="mb-4 mt-4">
                 <label>Industry:</label>
                 <p-select
                   [options]="industries"
@@ -241,7 +303,7 @@
                   placeholder="Select an industry"
                 ></p-select>
               </div>
-              <div class="mb-4">
+              <div style="margin-top: 10px" class="mb-4 mt-4">
                 <label>Sector:</label>
                 <p-select
                   [options]="sectors"
@@ -252,8 +314,8 @@
                   placeholder="Select a sector"
                 ></p-select>
               </div>
-              <div class="mb-4">
-                <label>Same State:</label>
+              <div style="margin-top: 10px" class="mb-4">
+                <label>Is Company in Same State as You:</label>
                 <p-checkbox
                   [(ngModel)]="sameState"
                   binary="true"
@@ -261,10 +323,32 @@
                 ></p-checkbox>
               </div>
             </div>
+            <div
+              class="pt-6"
+              style="
+                text-align: right;
+                margin-top: 20px;
+                justify-content: space-between;
+                display: flex;
+              "
+            >
+              <p-button
+                label="Previous"
+                icon="pi pi-arrow-left"
+                iconPos="left"
+                (onClick)="activateCallback(2)"
+              />
+              <p-button
+                [style]="{ background: 'blue' }"
+                label="Finish"
+                (onClick)="onFinishStepper()"
+                [disabled]="!canSubmit"
+                (onClick)="onSubmit()"
+              />
+            </div>
           </div>
         </ng-template>
       </p-step-panel>
-      
     </p-step-panels>
   </p-stepper>
 </div>

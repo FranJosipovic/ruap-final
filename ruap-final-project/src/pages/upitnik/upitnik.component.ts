@@ -7,6 +7,10 @@ import { FormsModule } from '@angular/forms';
 import { SelectModule } from 'primeng/select';
 import { Select } from 'primeng/select';
 import { CheckboxModule } from 'primeng/checkbox';
+import { InputNumber } from 'primeng/inputnumber';
+import { ButtonModule } from 'primeng/button';
+import { Observable, timeout, timer } from 'rxjs';
+import { ProgressSpinner } from 'primeng/progressspinner';
 
 type Data = {
   'Job Title': string;
@@ -36,7 +40,17 @@ type Data = {
 @Component({
   selector: 'app-upitnik',
   standalone: true,
-  imports: [StepperModule, CommonModule, SelectModule, FormsModule, Select, CheckboxModule],
+  imports: [
+    StepperModule,
+    CommonModule,
+    SelectModule,
+    FormsModule,
+    Select,
+    CheckboxModule,
+    InputNumber,
+    ButtonModule,
+    ProgressSpinner,
+  ],
   templateUrl: './upitnik.component.html',
   styleUrl: './upitnik.component.scss',
 })
@@ -70,6 +84,10 @@ export class UpitnikComponent implements OnInit {
   };
   public isSenior: boolean = false;
 
+  public isCalculating = false;
+
+  public successfullyCalculated: boolean | undefined;
+
   constructor(private httpClient: HttpClient) {}
 
   ngOnInit(): void {
@@ -88,13 +106,17 @@ export class UpitnikComponent implements OnInit {
           value && value !== 'Unknown' && value !== -1;
 
         const uniqueJobTitles = [
-          ...new Set(data.map((row) => row['Job Title']).filter(filterInvalidValues)),
+          ...new Set(
+            data.map((row) => row['Job Title']).filter(filterInvalidValues)
+          ),
         ];
 
         this.jobs = uniqueJobTitles.map((job) => ({ label: job, value: job }));
 
         const uniqueCompanies = [
-          ...new Set(data.map((row) => row.company_txt).filter(filterInvalidValues)),
+          ...new Set(
+            data.map((row) => row.company_txt).filter(filterInvalidValues)
+          ),
         ];
 
         this.companies = uniqueCompanies.map((company) => ({
@@ -103,7 +125,9 @@ export class UpitnikComponent implements OnInit {
         }));
 
         const uniqueLocations = [
-          ...new Set(data.map((row) => row.Location).filter(filterInvalidValues)),
+          ...new Set(
+            data.map((row) => row.Location).filter(filterInvalidValues)
+          ),
         ];
 
         this.locations = uniqueLocations.map((location) => ({
@@ -121,7 +145,11 @@ export class UpitnikComponent implements OnInit {
         }));
 
         const uniqueOwnershipTypes = [
-          ...new Set(data.map((row) => row['Type of ownership']).filter(filterInvalidValues)),
+          ...new Set(
+            data
+              .map((row) => row['Type of ownership'])
+              .filter(filterInvalidValues)
+          ),
         ];
 
         this.ownershipTypes = uniqueOwnershipTypes.map((type) => ({
@@ -130,7 +158,9 @@ export class UpitnikComponent implements OnInit {
         }));
 
         const uniqueIndustries = [
-          ...new Set(data.map((row) => row.Industry).filter(filterInvalidValues)),
+          ...new Set(
+            data.map((row) => row.Industry).filter(filterInvalidValues)
+          ),
         ];
 
         this.industries = uniqueIndustries.map((industry) => ({
@@ -155,5 +185,37 @@ export class UpitnikComponent implements OnInit {
         console.log(this.industries);
         console.log(this.sectors);
       });
+  }
+
+  onFinishStepper() {}
+
+  get canGoToPage2() {
+    return this.selectedJob !== undefined;
+  }
+
+  get canGoToPage3() {
+    return this.userAge !== undefined;
+  }
+
+  get canSubmit() {
+    return (
+      this.selectedLocation !== undefined &&
+      this.selectedSize !== undefined &&
+      this.selectedOwnershipType !== undefined &&
+      this.selectedIndustry !== undefined &&
+      this.selectedSector !== undefined
+    );
+  }
+
+  onSubmit() {
+    this.isCalculating = true;
+    timer(5000).subscribe(() => {
+      this.isCalculating = false;
+      this.successfullyCalculated = true;
+    });
+  }
+
+  calculateAgain() {
+    window.location.reload();
   }
 }

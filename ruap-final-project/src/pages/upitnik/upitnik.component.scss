@@ -10,3 +10,23 @@
 p-select {
   width: 100% !important;
 }
+
+// p-progress-spinner {
+//   position: relative !important;
+//   margin: 0 auto !important;
+//   width: 150px !important;
+//   height: 150px !important;
+//   display: block !important;
+// }
+
+::ng-deep {
+  p-progress-spinner {
+    .p-progressspinner {
+      position: relative !important;
+      margin: 0 auto !important;
+      width: 150px !important;
+      height: 150px !important;
+      display: block !important;
+    }
+  }
+}
