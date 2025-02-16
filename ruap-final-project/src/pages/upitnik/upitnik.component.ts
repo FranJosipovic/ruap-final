@@ -9,26 +9,20 @@ import { Select } from 'primeng/select';
 import { CheckboxModule } from 'primeng/checkbox';
 import { InputNumber } from 'primeng/inputnumber';
 import { ButtonModule } from 'primeng/button';
-import { Observable, timeout, timer } from 'rxjs';
+import { timer } from 'rxjs';
 import { ProgressSpinner } from 'primeng/progressspinner';
+import { InputGroupAddonModule } from 'primeng/inputgroupaddon';
+import { MenuModule } from 'primeng/menu';
+import { MlConnectorService, MlRequest } from './services/ml-connector.service';
 
 type Data = {
   'Job Title': string;
-  Rating: number;
-  'Company Name': string;
   Location: string;
   Headquarters: string;
   Size: string;
-  Founded: number;
   'Type of ownership': string;
   Industry: string;
   Sector: string;
-  hourly: number;
-  employer_provided: number;
-  avg_salary: number;
-  company_txt: string;
-  job_state: string;
-  same_state: boolean;
   age: number;
   python_yn: boolean;
   R_yn: boolean;
@@ -50,6 +44,8 @@ type Data = {
     InputNumber,
     ButtonModule,
     ProgressSpinner,
+    InputGroupAddonModule,
+    MenuModule,
   ],
   templateUrl: './upitnik.component.html',
   styleUrl: './upitnik.component.scss',
@@ -73,8 +69,29 @@ export class UpitnikComponent implements OnInit {
   public selectedIndustry: string | undefined;
   public selectedSector: string | undefined;
 
-  public salaryRangeDown: number = 0;
-  public salaryRangeUp: number = 0;
+  public companyRevenue: string | undefined;
+  public companyRevenueOptions: { label: string; value: string }[] = [
+    { label: 'Unknown / Non-Applicable', value: 'Unknown / Non-Applicable' },
+    {
+      label: 'Less than $1 million (USD)',
+      value: 'Less than $1 million (USD)',
+    },
+    { label: '$5 to $10 million (USD)', value: '$5 to $10 million (USD)' },
+    { label: '$10 to $25 million (USD)', value: '$10 to $25 million (USD)' },
+    { label: '$25 to $50 million (USD)', value: '$25 to $50 million (USD)' },
+    {
+      label: '$100 to $500 million (USD)',
+      value: '$100 to $500 million (USD)',
+    },
+    {
+      label: '$500 million to $1 billion (USD)',
+      value: '$500 million to $1 billion (USD)',
+    },
+    { label: '$1 to $2 billion (USD)', value: '$1 to $2 billion (USD)' },
+    { label: '$2 to $5 billion (USD)', value: '$2 to $5 billion (USD)' },
+    { label: '$5 to $10 billion (USD)', value: '$5 to $10 billion (USD)' },
+    { label: '$10+ billion (USD)', value: '$10+ billion (USD)' },
+  ];
 
   public userAge: number | undefined;
   public skills = {
@@ -89,7 +106,10 @@ export class UpitnikComponent implements OnInit {
 
   public successfullyCalculated: boolean | undefined;
 
-  constructor(private httpClient: HttpClient) {}
+  constructor(
+    private httpClient: HttpClient,
+    private mlConnectorService: MlConnectorService
+  ) {}
 
   ngOnInit(): void {
     this.httpClient
@@ -113,17 +133,6 @@ export class UpitnikComponent implements OnInit {
         ];
 
         this.jobs = uniqueJobTitles.map((job) => ({ label: job, value: job }));
-
-        const uniqueCompanies = [
-          ...new Set(
-            data.map((row) => row.company_txt).filter(filterInvalidValues)
-          ),
-        ];
-
-        this.companies = uniqueCompanies.map((company) => ({
-          label: company,
-          value: company,
-        }));
 
         const uniqueLocations = [
           ...new Set(
@@ -210,9 +219,46 @@ export class UpitnikComponent implements OnInit {
 
   onSubmit() {
     this.isCalculating = true;
-    timer(5000).subscribe(() => {
+
+    let request: MlRequest = {
+      inputData: {
+        columns: [
+          'Job Title',
+          'Location',
+          'Size',
+          'Type of ownership',
+          'Industry',
+          'Sector',
+          'Revenue',
+          'age',
+          'python_yn',
+          'R_yn',
+          'spark',
+          'aws',
+          'excel',
+        ],
+        index: [],
+        data: [
+          this.selectedJob,
+          this.selectedLocation,
+          this.selectedSize,
+          this.selectedOwnershipType,
+          this.selectedIndustry,
+          this.selectedSector,
+          this.companyRevenue,
+          this.userAge,
+          this.skills.python ? '1' : '0',
+          this.skills.r ? '1' : '0',
+          this.skills.spark ? '1' : '0',
+          this.skills.aws ? '1' : '0',
+          this.skills.excel ? '1' : '0',
+        ],
+      },
+    };
+
+    this.mlConnectorService.calculate(request).subscribe((data) => {
+      console.log(data);
       this.isCalculating = false;
-      this.successfullyCalculated = true;
     });
   }
 

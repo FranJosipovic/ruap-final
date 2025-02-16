@@ -316,24 +316,16 @@
                   placeholder="Select a sector"
                 ></p-select>
               </div>
-              <div
-                style="margin-top: 10px; display: flex; flex-direction: column"
-                class="mb-4 mt-4"
-              >
-                <label>Salary Range:</label>
-                <div style="display: flex; flex-direction: row; gap: 10px">
-                  <p-input-number
-                    [(ngModel)]="salaryRangeDown"
-                    suffix="K"
-                    prefix="$"
-                  />
-                  <p>-</p>
-                  <p-input-number
-                    [(ngModel)]="salaryRangeUp"
-                    suffix="K"
-                    prefix="$"
-                  />
-                </div>
+              <div style="margin-top: 10px" class="mb-4 mt-4">
+                <label>Sector:</label>
+                <p-select
+                  [options]="companyRevenueOptions"
+                  optionLabel="label"
+                  [(ngModel)]="companyRevenue"
+                  [filter]="true"
+                  filterBy="label"
+                  placeholder="Select a company revenue"
+                ></p-select>
               </div>
             </div>
             <div
