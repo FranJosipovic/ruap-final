@@ -72,7 +72,9 @@ export class UpitnikComponent implements OnInit {
   public selectedOwnershipType: string | undefined;
   public selectedIndustry: string | undefined;
   public selectedSector: string | undefined;
-  public sameState: boolean = false;
+
+  public salaryRangeDown: number = 0;
+  public salaryRangeUp: number = 0;
 
   public userAge: number | undefined;
   public skills = {
@@ -82,7 +84,6 @@ export class UpitnikComponent implements OnInit {
     excel: false,
     spark: false,
   };
-  public isSenior: boolean = false;
 
   public isCalculating = false;
 

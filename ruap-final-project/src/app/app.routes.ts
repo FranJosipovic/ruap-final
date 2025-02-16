@@ -15,4 +15,9 @@ export const routes: Routes = [
         (mod) => mod.UpitnikComponent
       ),
   },
+  {
+    path: '**',
+    redirectTo: '',
+    pathMatch: 'full',
+  },
 ];

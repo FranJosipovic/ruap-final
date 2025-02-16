@@ -6,10 +6,10 @@
 
   <div style="text-align: center" *ngIf="successfullyCalculated !== undefined">
     <div *ngIf="successfullyCalculated">
-      <h2>Estimated Salary:</h2>
-      <h3>5000$</h3>
+      <p style="font-size: 4em">Estimated Salary:</p>
+      <p style="font-size: 3em">5000$</p>
       <p-button
-        [style]="{ background: 'blue' }"
+        [style]="{ background: 'black', color: 'white', border: 'none' }"
         label="Calculate Again"
         (onClick)="calculateAgain()"
         [disabled]="!canSubmit"
@@ -18,7 +18,7 @@
     <div *ngIf="!successfullyCalculated">
       <h3>Error while estimating your salary</h3>
       <p-button
-        [style]="{ background: 'blue' }"
+        [style]="{ background: 'black', color: 'white' }"
         label="Calculate Again"
         (onClick)="calculateAgain()"
         [disabled]="!canSubmit"
@@ -163,7 +163,7 @@
             </h3>
             <div class="text-center" style="width: 100%">
               <div style="display: flex; flex-direction: column" class="mb-4;">
-                <label for="age">Age:</label>
+                <label for="age" style="margin-bottom: 10px">Age:</label>
                 <p-inputnumber
                   [(ngModel)]="userAge"
                   inputId="integeronly"
@@ -316,13 +316,24 @@
                   placeholder="Select a sector"
                 ></p-select>
               </div>
-              <div style="margin-top: 10px" class="mb-4">
-                <label>Is Company in Same State as You:</label>
-                <p-checkbox
-                  [(ngModel)]="sameState"
-                  binary="true"
-                  label="Same State"
-                ></p-checkbox>
+              <div
+                style="margin-top: 10px; display: flex; flex-direction: column"
+                class="mb-4 mt-4"
+              >
+                <label>Salary Range:</label>
+                <div style="display: flex; flex-direction: row; gap: 10px">
+                  <p-input-number
+                    [(ngModel)]="salaryRangeDown"
+                    suffix="K"
+                    prefix="$"
+                  />
+                  <p>-</p>
+                  <p-input-number
+                    [(ngModel)]="salaryRangeUp"
+                    suffix="K"
+                    prefix="$"
+                  />
+                </div>
               </div>
             </div>
             <div
@@ -341,7 +352,11 @@
                 (onClick)="activateCallback(2)"
               />
               <p-button
-                [style]="{ background: 'blue' }"
+                [style]="{
+                  background: 'black',
+                  color: 'white',
+                  border: 'none'
+                }"
                 label="Finish"
                 (onClick)="onFinishStepper()"
                 [disabled]="!canSubmit"
