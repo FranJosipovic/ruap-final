@@ -1,0 +1,11 @@
+{
+  "/api": {
+    "target": "https://ruap-project-ws-fswlr.francecentral.inference.ml.azure.com/score",
+    "secure": false,
+    "changeOrigin": true,
+    "logLevel": "debug",
+    "pathRewrite": {
+      "^/api": ""
+    }
+  }
+}

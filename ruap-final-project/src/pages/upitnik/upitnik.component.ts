@@ -221,7 +221,7 @@ export class UpitnikComponent implements OnInit {
     this.isCalculating = true;
 
     let request: MlRequest = {
-      inputData: {
+      input_data: {
         columns: [
           'Job Title',
           'Location',
@@ -237,16 +237,16 @@ export class UpitnikComponent implements OnInit {
           'aws',
           'excel',
         ],
-        index: [],
+        index: ['0'],
         data: [
-          this.selectedJob,
-          this.selectedLocation,
-          this.selectedSize,
-          this.selectedOwnershipType,
-          this.selectedIndustry,
-          this.selectedSector,
-          this.companyRevenue,
-          this.userAge,
+          this.selectedJob!,
+          this.selectedLocation!,
+          this.selectedSize!,
+          this.selectedOwnershipType!,
+          this.selectedIndustry!,
+          this.selectedSector!,
+          this.companyRevenue!,
+          this.userAge?.toString()!,
           this.skills.python ? '1' : '0',
           this.skills.r ? '1' : '0',
           this.skills.spark ? '1' : '0',
@@ -256,9 +256,16 @@ export class UpitnikComponent implements OnInit {
       },
     };
 
-    this.mlConnectorService.calculate(request).subscribe((data) => {
-      console.log(data);
-      this.isCalculating = false;
+    this.mlConnectorService.calculate(request).subscribe({
+      next: (data) => {
+        console.log(data);
+        this.isCalculating = false;
+        this.successfullyCalculated = true;
+      },
+      error: (err) => {
+        this.isCalculating = false;
+        this.successfullyCalculated = false;
+      },
     });
   }
 

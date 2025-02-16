@@ -16,9 +16,9 @@
       />
     </div>
     <div *ngIf="!successfullyCalculated">
-      <h3>Error while estimating your salary</h3>
+      <p style="font-size: 4em">Error while estimating your salary</p>
       <p-button
-        [style]="{ background: 'black', color: 'white' }"
+        [style]="{ background: 'black', color: 'white', border: 'none' }"
         label="Calculate Again"
         (onClick)="calculateAgain()"
         [disabled]="!canSubmit"
@@ -120,6 +120,7 @@
               <p-select
                 [options]="jobs"
                 optionLabel="label"
+                optionValue="value"
                 [(ngModel)]="selectedJob"
                 [filter]="true"
                 filterBy="label"
@@ -266,6 +267,7 @@
                 <p-select
                   [options]="locations"
                   optionLabel="label"
+                  optionValue="value"
                   [(ngModel)]="selectedLocation"
                   [filter]="true"
                   filterBy="label"
@@ -277,6 +279,7 @@
                 <p-select
                   [options]="sizes"
                   optionLabel="label"
+                  optionValue="value"
                   [(ngModel)]="selectedSize"
                   [filter]="true"
                   filterBy="label"
@@ -288,6 +291,7 @@
                 <p-select
                   [options]="ownershipTypes"
                   optionLabel="label"
+                  optionValue="value"
                   [(ngModel)]="selectedOwnershipType"
                   [filter]="true"
                   filterBy="label"
@@ -299,6 +303,7 @@
                 <p-select
                   [options]="industries"
                   optionLabel="label"
+                  optionValue="value"
                   [(ngModel)]="selectedIndustry"
                   [filter]="true"
                   filterBy="label"
@@ -310,6 +315,7 @@
                 <p-select
                   [options]="sectors"
                   optionLabel="label"
+                  optionValue="value"
                   [(ngModel)]="selectedSector"
                   [filter]="true"
                   filterBy="label"
@@ -321,6 +327,7 @@
                 <p-select
                   [options]="companyRevenueOptions"
                   optionLabel="label"
+                  optionValue="value"
                   [(ngModel)]="companyRevenue"
                   [filter]="true"
                   filterBy="label"

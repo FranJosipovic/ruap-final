@@ -1,6 +1,6 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { map, Observable } from 'rxjs';
+import { catchError, map, Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -9,31 +9,32 @@ export class MlConnectorService {
   constructor(private httpClient: HttpClient) {}
 
   calculate(mlRequest: MlRequest): Observable<any> {
-    const requestHeaders = new Headers({ 'Content-Type': 'application/json' });
-    const apiKey =
-      '3lxV28bNSV2Vg75GrRP4jDX3kUjzQLBssZXZGWOCQsHnuBCgYMnZJQQJ99BBAAAAAAAAAAAAINFRAZML42Ih';
-    requestHeaders.append('Authorization', 'Bearer ' + apiKey);
-    requestHeaders.append('azureml-model-deployment', 'avgsalarypredic24-1');
+    const requestHeaders = new HttpHeaders({
+      'Content-Type': 'application/json',
+      Authorization:
+        'Bearer 3lxV28bNSV2Vg75GrRP4jDX3kUjzQLBssZXZGWOCQsHnuBCgYMnZJQQJ99BBAAAAAAAAAAAAINFRAZML42Ih',
+      'azureml-model-deployment': 'avgsalarypredic24-1',
+    });
 
     return this.httpClient
-      .post(
-        'https://ruap-project-ws-fswlr.francecentral.inference.ml.azure.com/score',
-        mlRequest
-      )
+      .post('/api', mlRequest, { headers: requestHeaders })
       .pipe(
         map((res) => {
           console.log(res);
           return res;
+        }),
+        catchError((err) => {
+          throw err;
         })
       );
   }
 }
 
 export interface MlRequest {
-  inputData: {
+  input_data: {
     columns: string[];
     index: string[];
-    data: any[];
+    data: string[];
   };
 }
 
