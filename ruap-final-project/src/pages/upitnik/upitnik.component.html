@@ -7,7 +7,7 @@
   <div style="text-align: center" *ngIf="successfullyCalculated !== undefined">
     <div *ngIf="successfullyCalculated">
       <p style="font-size: 4em">Estimated Salary:</p>
-      <p style="font-size: 3em">5000$</p>
+      <p style="font-size: 3em">${{ estimatedSalary }}K</p>
       <p-button
         [style]="{ background: 'black', color: 'white', border: 'none' }"
         label="Calculate Again"

@@ -217,6 +217,8 @@ export class UpitnikComponent implements OnInit {
     );
   }
 
+  public estimatedSalary: number | undefined;
+
   onSubmit() {
     this.isCalculating = true;
 
@@ -237,21 +239,23 @@ export class UpitnikComponent implements OnInit {
           'aws',
           'excel',
         ],
-        index: ['0'],
+        index: [120],
         data: [
-          this.selectedJob!,
-          this.selectedLocation!,
-          this.selectedSize!,
-          this.selectedOwnershipType!,
-          this.selectedIndustry!,
-          this.selectedSector!,
-          this.companyRevenue!,
-          this.userAge?.toString()!,
-          this.skills.python ? '1' : '0',
-          this.skills.r ? '1' : '0',
-          this.skills.spark ? '1' : '0',
-          this.skills.aws ? '1' : '0',
-          this.skills.excel ? '1' : '0',
+          [
+            this.selectedJob!,
+            this.selectedLocation!,
+            this.selectedSize!,
+            this.selectedOwnershipType!,
+            this.selectedIndustry!,
+            this.selectedSector!,
+            this.companyRevenue!,
+            this.userAge!,
+            this.skills.python ? 1 : 0,
+            this.skills.r ? 1 : 0,
+            this.skills.spark ? 1 : 0,
+            this.skills.aws ? 1 : 0,
+            this.skills.excel ? 1 : 0,
+          ],
         ],
       },
     };
@@ -259,6 +263,7 @@ export class UpitnikComponent implements OnInit {
     this.mlConnectorService.calculate(request).subscribe({
       next: (data) => {
         console.log(data);
+        this.estimatedSalary = Math.floor(data[0]);
         this.isCalculating = false;
         this.successfullyCalculated = true;
       },

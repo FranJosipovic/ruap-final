@@ -33,8 +33,8 @@ export class MlConnectorService {
 export interface MlRequest {
   input_data: {
     columns: string[];
-    index: string[];
-    data: string[];
+    index: number[];
+    data: (string | number)[][];
   };
 }
 
