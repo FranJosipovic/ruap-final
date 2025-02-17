@@ -17,11 +17,7 @@ export class MlConnectorService {
     });
 
     return this.httpClient
-      .post(
-        'https://ruap-project-ws-fswlr.francecentral.inference.ml.azure.com/score',
-        mlRequest,
-        { headers: requestHeaders }
-      )
+      .post('/api', mlRequest, { headers: requestHeaders })
       .pipe(
         map((res) => {
           console.log(res);
